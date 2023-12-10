@@ -17,8 +17,14 @@ function getURLsFromHTML(htmlBody, baseURL) {
   const dom = new JSDOM(htmlBody);
   
   let result = [];
-  dom.window.document.querySelectorAll("a").forEach((value, key, parent) => {
-    const myUrl = new URL(value.href, baseURL);
+  dom.window.document.querySelectorAll("a").forEach((value) => {
+    let href = value.href;
+
+    if (value.href.includes("about:blank")) {
+      href = value.href.replace(/^about:blank/, "");      
+    }
+
+    const myUrl = new URL(href, baseURL);
     result.push(myUrl.href);
   });
   return result;
@@ -38,10 +44,9 @@ async function crawlPage(baseURL, currentUrl, pages) {
       let text = await value.text();
       let urls = getURLsFromHTML(text, currentUrl);
       console.log("this is current Url = ", currentUrl);
-      // console.log(pages);
+
       for (let index = 0; index < urls.length; index++) {
         const url = urls[index];
-        // console.log(`I will be crawling ${url} with index ${index} and from url ${currentUrl}`)
         
         if (pages[url] === undefined) {
           pages[url] = new Set([currentUrl]);
@@ -57,16 +62,6 @@ async function crawlPage(baseURL, currentUrl, pages) {
   } catch (err) {
     console.error(err);
   }
-}
-
-function updatePages(urls, pages) {
-  urls.forEach((value) => {
-    if (pages[value] === undefined) {
-      pages[value] = 1;
-    } else {
-      pages[value]++;
-    }
-  });
 }
 
 module.exports = {

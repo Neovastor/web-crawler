@@ -2,6 +2,9 @@ const { argv } = require("node:process");
 const { crawlPage } = require("./crawl");
 const { printReport } = require("./report");
 
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
 async function main() {
   const argArr = argv.slice(2);
   if (argArr.length === 1) {
