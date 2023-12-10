@@ -1,9 +1,6 @@
 const { argv } = require("node:process");
-const { crawlPage } = require("./crawl");
-const { printReport } = require("./report");
-
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { crawlPage } = require("./code/crawl");
+const { printReport } = require("./code/report");
 
 async function main() {
   const argArr = argv.slice(2);

@@ -45,19 +45,22 @@ async function crawlPage(baseURL, currentUrl, pages) {
       let urls = getURLsFromHTML(text, currentUrl);
       console.log("this is current Url = ", currentUrl);
 
-      for (let index = 0; index < urls.length; index++) {
-        const url = urls[index];
-        
-        if (pages[url] === undefined) {
-          pages[url] = new Set([currentUrl]);
+      await Promise.all(urls.map(async (url) => {
+        try {
+          if (pages[url] === undefined) {
+            pages[url] = new Set([currentUrl]);
 
-          if (currentUrl.includes(normalizeURL(baseURL))) {
-            await crawlPage(baseURL, url, pages);
+            if (currentUrl.includes(normalizeURL(baseURL))) {
+              await crawlPage(baseURL, url, pages);
+            }
+          } else {
+            pages[url].add(currentUrl);
           }
-        } else {
-          pages[url].add(currentUrl);
+        } catch (err) {
+          console.error(err);
         }
-      }
+      }));
+      
     }
   } catch (err) {
     console.error(err);

@@ -10,7 +10,7 @@ function printReport(pages) {
     }, {});
 
   fs.writeFileSync(
-    "./data.json",
+    "./report/data3.json",
     JSON.stringify(orderedPages, null, 2),
     "utf-8"
   );

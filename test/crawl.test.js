@@ -1,8 +1,7 @@
 const { test, expect } = require("@jest/globals");
-const { normalizeURL, getURLsFromHTML } = require("./crawl");
+const { normalizeURL, getURLsFromHTML } = require("../code/crawl");
 const fs = require("fs");
 
-const expectedResult = "blog.boot.dev/path";
 const baseUrl = "https://www.example.com";
 
 test("test 1", () => {
@@ -27,7 +26,7 @@ test("test 4", () => {
 3. Test to be sure you find all the <a> tags in a body of HTML
 */
 test("test 5", () => {
-  const html = fs.readFileSync("test.html", {
+  const html = fs.readFileSync("./test/test.html", {
     encoding: "utf-8",
   });
   const result = getURLsFromHTML(html, baseUrl);
